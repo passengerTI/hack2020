@@ -41,7 +41,7 @@ def calc_gipertenziya(clientId):
   persent = prediction/summ_elements*100
 
   result = str(random.randint(0,10))
-  return persent
+  return prediction
 
 def calc_onmk():
   result = str(random.randint(0,10))
@@ -58,6 +58,7 @@ def calc_heart_failure():
 def calc_other_ill():
   result = str(random.randint(0,90))
   return result
+
 
 def index(request):
     # req from DB list of clients
@@ -143,6 +144,12 @@ def client(request,clientId):
     json_result = json.loads(result)
 
     return JsonResponse(json_result)
+
+def clientSave(request,clientId):
+    a = """ {"type":"success","message": "Анкета успешно сохранена"} """
+    json_result = json.loads(a)
+    return JsonResponse(json_result)
+
 
 
 #db.close()
