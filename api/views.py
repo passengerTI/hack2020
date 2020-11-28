@@ -17,31 +17,31 @@ def calc_gipertenziya(clientId):
   feature_set = []
   target_set = []
 
-  summ_elements = int(5)
+  #summ_elements = int(5)
 
-  cursor = db.cursor()
-  cursor.execute("SELECT working,pension,work_end_by_ill,diabet,diabet_long FROM sovershen1 WHERE arterial_gipper = 1")
-  rows = cursor.fetchall()
+  #cursor = db.cursor()
+  #cursor.execute("SELECT working,pension,work_end_by_ill,diabet,diabet_long FROM sovershen1 WHERE arterial_gipper = 1")
+  #rows = cursor.fetchall()
   
-  for row in rows:
-    kernel = (1*row[0])
-    feature_set.append([row[0],row[1],row[2],row[3],row[4]])
-    target_set.append(kernel)
+  #for row in rows:
+#    kernel = (1*row[0])
+#    feature_set.append([row[0],row[1],row[2],row[3],row[4]])
+#    target_set.append(kernel)
 
-  model = LinearRegression()
-  model.fit(feature_set, target_set)
+#  model = LinearRegression()
+#  model.fit(feature_set, target_set)
 
-  cursor = db.cursor()
-  cursor.execute("""SELECT working,pension,work_end_by_ill,diabet,diabet_long FROM sovershen1 WHERE id like "{0}" LIMIT 1 """.format(clientId))
-  client_rows = cursor.fetchall()
+#  cursor = db.cursor()
+#  cursor.execute("""SELECT working,pension,work_end_by_ill,diabet,diabet_long FROM sovershen1 WHERE id like "{0}" LIMIT 1 """.format(clientId))
+#  client_rows = cursor.fetchall()
 
-  test_set = [[row[0],row[1],row[2],row[3],row[4]]]
-  prediction = model.predict(test_set)
+#  test_set = [[row[0],row[1],row[2],row[3],row[4]]]
+#  prediction = model.predict(test_set)
 
-  persent = prediction/summ_elements*100
+#  persent = 1*100/5
 
-  result = str(random.randint(0,10))
-  return prediction
+#  result = str(random.randint(0,10))
+  return str(1)
 
 def calc_onmk():
   result = str(random.randint(0,10))
@@ -79,11 +79,16 @@ def index(request):
 def client(request,clientId):
     # req info about client by id
 
-    gipertenziya = calc_gipertenziya(clientId)
-    onmk = calc_onmk()
-    infarkt = calc_infarkt()
-    heart_failure = calc_heart_failure()
-    other_ill = calc_other_ill()
+    cursor = db.cursor()
+    cursor.execute("""SELECT gipertenziya, onmk, infarkt,heart_failure, other_ill FROM predict WHERE id like "{0}" """.format(clientId))
+    rows = cursor.fetchall()
+    
+    for row in rows:
+      gipertenziya = row[0]
+      onmk = row[1]
+      infarkt = row[2]
+      heart_failure = row[3]
+      other_ill = row[4]
 
     cursor = db.cursor()
     cursor.execute("""
@@ -147,6 +152,11 @@ def client(request,clientId):
 
 def clientSave(request,clientId):
     a = """ {"type":"success","message": "Анкета успешно сохранена"} """
+    json_result = json.loads(a)
+    return JsonResponse(json_result)
+
+def clientAdd(request,clientId):
+    a = """ {"type":"success","message": "Анкета успешно добавлена"} """
     json_result = json.loads(a)
     return JsonResponse(json_result)
 
