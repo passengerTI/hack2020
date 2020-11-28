@@ -22,7 +22,6 @@ for i in range(0,number_of_rows):
   target_set.append(function)
 
 model = LinearRegression() #Create a linear regression object/model
-print(feature_set)
 model.fit(feature_set, target_set) 
 
 test_set = [[8,10,0]] 

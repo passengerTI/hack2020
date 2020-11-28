@@ -7,9 +7,57 @@ import pymysql
 import json
 import cgi
 import random
+import math
+from sklearn.linear_model import LinearRegression
 
 
 db = pymysql.connect("localhost","hack2020","simple7Start","hack2020")
+
+def calc_gipertenziya(clientId):
+  feature_set = []
+  target_set = []
+
+  summ_elements = int(5)
+
+  cursor = db.cursor()
+  cursor.execute("SELECT working,pension,work_end_by_ill,diabet,diabet_long FROM sovershen1 WHERE arterial_gipper = 1")
+  rows = cursor.fetchall()
+  
+  for row in rows:
+    kernel = (1*row[0])
+    feature_set.append([row[0],row[1],row[2],row[3],row[4]])
+    target_set.append(kernel)
+
+  model = LinearRegression()
+  model.fit(feature_set, target_set)
+
+  cursor = db.cursor()
+  cursor.execute("""SELECT working,pension,work_end_by_ill,diabet,diabet_long FROM sovershen1 WHERE id like "{0}" LIMIT 1 """.format(clientId))
+  client_rows = cursor.fetchall()
+
+  test_set = [[row[0],row[1],row[2],row[3],row[4]]]
+  prediction = model.predict(test_set)
+
+  persent = prediction/summ_elements*100
+
+  result = str(random.randint(0,10))
+  return persent
+
+def calc_onmk():
+  result = str(random.randint(0,10))
+  return result
+
+def calc_infarkt():
+  result = str(random.randint(0,10))
+  return result
+
+def calc_heart_failure():
+  result = str(random.randint(0,50))
+  return result
+
+def calc_other_ill():
+  result = str(random.randint(0,90))
+  return result
 
 def index(request):
     # req from DB list of clients
@@ -30,11 +78,11 @@ def index(request):
 def client(request,clientId):
     # req info about client by id
 
-    gipertenziya = str(random.randint(0,90))
-    onmk = str(random.randint(0,90))
-    infarkt = str(random.randint(0,90))
-    heart_failure = str(random.randint(0,90))
-    other_ill = str(random.randint(0,90))
+    gipertenziya = calc_gipertenziya(clientId)
+    onmk = calc_onmk()
+    infarkt = calc_infarkt()
+    heart_failure = calc_heart_failure()
+    other_ill = calc_other_ill()
 
     cursor = db.cursor()
     cursor.execute("""
@@ -91,8 +139,10 @@ def client(request,clientId):
 	"other_ill":{21}
 	""".format(rows[0],rows[1],rows[2],rows[3],rows[4],rows[5],rows[6],rows[7],rows[8],rows[9],rows[10],rows[11],rows[12],rows[13],rows[14],rows[15],clientId,gipertenziya,onmk,infarkt,heart_failure,other_ill)
     result += "}"
+    
+    json_result = json.loads(result)
 
-    return HttpResponse(result)
+    return JsonResponse(json_result)
 
 
 #db.close()
