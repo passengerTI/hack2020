@@ -150,6 +150,7 @@ def client(request,clientId):
 
     return JsonResponse(json_result)
 
+### Save function from edit form
 def clientSave(request,clientId):
     a = """ {"type":"success","message": "Анкета успешно сохранена"} """
     json_result = json.loads(a)
