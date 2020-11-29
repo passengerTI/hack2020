@@ -158,6 +158,8 @@ const ClientPage = () => {
                    '100%': '#faad14'
                  }}
                  percent={client.gipertenziya}
+                 status={client.gipertenziya && client.gipertenziya > 80 ? 'exception' : 'success'}
+                 format={percent => `${percent} %`}
                />
             </Descriptions.Item>
             <Descriptions.Item label="Вероятность ОНМК">
@@ -168,6 +170,8 @@ const ClientPage = () => {
                    '100%': '#faad14'
                  }}
                  percent={client.onmk}
+                 status={client.onmk && client.onmk > 80 ? 'exception' : 'success'}
+                 format={percent => `${percent} %`}
                />
             </Descriptions.Item>
             <Descriptions.Item label="Вероятность cтенокардии, ИБС, инфаркта миокарда">
@@ -178,6 +182,8 @@ const ClientPage = () => {
                    '100%': '#faad14'
                  }}
                  percent={client.infarkt}
+                 status={client.infarkt && client.infarkt > 80 ? 'exception' : 'success'}
+                 format={percent => `${percent} %`}
                />
             </Descriptions.Item>
             <Descriptions.Item label="Вероятность сердечной недостаточности">
@@ -188,6 +194,8 @@ const ClientPage = () => {
                    '100%': '#faad14'
                  }}
                  percent={client.heart_failure}
+                 status={client.heart_failure && client.heart_failure > 80 ? 'exception' : 'success'}
+                 format={percent => `${percent} %`}
                />
             </Descriptions.Item>
             <Descriptions.Item label="Вероятность прочих заболеваний сердца">
@@ -198,6 +206,8 @@ const ClientPage = () => {
                    '100%': '#faad14'
                  }}
                  percent={client.other_ill}
+                 status={client.other_ill && client.other_ill > 80 ? 'exception' : 'success'}
+                 format={percent => `${percent} %`}
                />
             </Descriptions.Item>
             <Descriptions.Item label="Персональные рекомендации">
