@@ -124,3 +124,10 @@ STATIC_URL = '/static/'
 ALLOWED_HOSTS=['*']
 
 CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDENTIALS = True
+CORS_ORIGIN_WHITELIST = (
+    'https://ex.semenushkin.ru',
+)
+CORS_ORIGIN_REGEX_WHITELIST = (
+    '*',
+)

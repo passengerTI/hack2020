@@ -16,12 +16,17 @@ def laern_gipertenziya():
   feature_set = []
   target_set = []
 
+  # Set default
   summ_elements = 5
 
   cursor.execute("SELECT working, pension,work_end_by_ill,diabet,diabet_long FROM sovershen1 WHERE arterial_gipper = 1")
   rows = cursor.fetchall()
 
+
   for row in rows:
+    # Set summ in real life
+    summ_elements = len(row)
+    # Prepare
     kernel = (1*row[0]) + (1*row[1]) + (1*row[2]) + (1*row[3]) + (1*row[4])
     feature_set.append([row[0],row[1],row[2],row[3],row[4]])
     target_set.append(kernel)
